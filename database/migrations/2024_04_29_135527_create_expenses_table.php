@@ -12,10 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('expenses', function (Blueprint $table) {
-            $table->id('id');
-            $table->foreignId('card_id')->constrained();
+            $table->uuid('id')->primary();
+            $table->uuid('card_id')->index();
             $table->float('transaction');
-            $table->timestamp('transaction_at')->useCurrent();
+            $table->timestamps();
+
+            $table->foreign('card_id')
+                ->references('id')
+                ->on('cards');
         });
     }
 
